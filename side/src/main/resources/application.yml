@@ -6,7 +6,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:test;MODE=MYSQL;NON_KEYWORDS=USER; 
+    url: jdbc:h2:mem:test;MODE=MYSQL;
     driver-class-name: org.h2.Driver
     username: sa
     password: 
