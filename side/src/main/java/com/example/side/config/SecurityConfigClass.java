@@ -4,14 +4,13 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 
 @Configuration // 1. 빈 등록
 @EnableWebSecurity // 2. 스프링 시큐리티 필터가 스프링 필터체인에 등록됨
@@ -34,23 +33,54 @@ public class SecurityConfigClass {
 
     // 정리 security session => authentication => userDetails
 
+    // ignore 설정 변경전
+    // https://velog.io/@pjh612/Deprecated%EB%90%9C-WebSecurityConfigurerAdapter-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%8C%80%EC%B2%98%ED%95%98%EC%A7%80
+
+    // @Override
+    // public void configure(WebSecurity web) {
+    // web
+    // .ignoring() // spring security 필터 타지 않도록 설정
+    // .antMatchers("/resources/**") // 정적 리소스 무시
+    // .antMatchers("/h2-console/**"); // h2-console 무시
+    // }
+
+    // 변경후
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .antMatchers("/assets/**");
+    }
+
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
         http.authorizeRequests()
+                // url 별 권한설정
                 .antMatchers("/**/user/**").authenticated()
                 .antMatchers("/auth/admin/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll()
-                .and() // and로 구분
+                // login 관련 설정
+                .and()
                 .formLogin() // 로그인 폼 사용
                 // .loginPage("/경로") // 경로로 이동
                 // .usernameParameter("username2") // 이렇게 바꿔줘야 동작함
                 .loginProcessingUrl("/login") // "경로" 요청이 들어오면 시큐리티가 대신 처리함
-                .defaultSuccessUrl("/"); // 로그인이 완료되면
+                // .defaultSuccessUrl("/") // 로그인이 완료되면
+                // .failureForwardUrl("/fail") // 실패하면 줄 거
+                .and()
+                .logout()
+                .logoutUrl("/logout"); // 로그아웃 url 설정, 안하면 디폴트로 logout인가
 
         return http.build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        // 비밀번호 암호화 할때 사용할 BCrypthPasswordEncoder 를 빈으로 등록
+        return new BCryptPasswordEncoder();
     }
 
 }

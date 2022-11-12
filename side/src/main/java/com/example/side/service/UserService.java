@@ -2,6 +2,7 @@ package com.example.side.service;
 
 import java.util.Optional;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.side.domain.User;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User findByUser(Long id) {
         Optional<User> userPS = userRepository.findById(id);
@@ -22,6 +24,7 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return user;
     }

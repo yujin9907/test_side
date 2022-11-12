@@ -57,4 +57,16 @@ public class UserRepositoryTest {
 
     }
 
+    @Test
+    public void 유저네임조회테스트() {
+        // given
+        String username = "ssar";
+
+        // when
+        User userPS = userRepository.findByUsername(username);
+
+        // then
+        assertEquals(username, userPS.getUsername());
+    }
+
 }

@@ -15,7 +15,9 @@ import com.example.side.domain.User;
 import com.example.side.domain.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service // 1. di
 @RequiredArgsConstructor
 public class PrincipalDetailService implements UserDetailsService {
@@ -31,6 +33,7 @@ public class PrincipalDetailService implements UserDetailsService {
                                                                                               // 받아야 됨. 여기 받는 파라미터 값이
                                                                                               // 유저네임이므로
         User userPS = userRepository.findByUsername(username);
+        log.debug("디버그 : " + userPS.getUsername());
         if (userPS != null) {
             return new PrincipalDetail(userPS);
         }
