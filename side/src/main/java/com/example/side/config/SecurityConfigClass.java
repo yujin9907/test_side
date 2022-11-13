@@ -4,10 +4,9 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 // @EnableGlobalMethodSecurity(securedEnabled = true) // 시큐어 어노테이션 활성화, 각 컨트룰러
 // 메서드에 시큐어드 어노테이션을 걸어서 접근 권한을 지정할 수 있음.\
 // preAuthorize 도 알아보기
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfigClass {
 
     // 시큐리티 5.7부터는 컴포넌트 기반의 보안 설정 권장을 위해 deprecated 됨
@@ -59,8 +59,8 @@ public class SecurityConfigClass {
 
         http.authorizeRequests()
                 // url 별 권한설정
-                .antMatchers("/**/user/**").authenticated()
-                .antMatchers("/auth/admin/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/auth/**").authenticated()
+                .antMatchers("/**/user/**").access("hasRole('USER')")
                 .anyRequest().permitAll()
                 // login 관련 설정
                 .and()

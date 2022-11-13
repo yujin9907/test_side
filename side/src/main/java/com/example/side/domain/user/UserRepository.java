@@ -1,4 +1,4 @@
-package com.example.side.domain;
+package com.example.side.domain.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

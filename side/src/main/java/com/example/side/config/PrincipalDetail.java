@@ -3,11 +3,10 @@ package com.example.side.config;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hibernate.cache.spi.support.CollectionReadOnlyAccess;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.side.domain.User;
+import com.example.side.domain.user.User;
 
 import lombok.RequiredArgsConstructor;
 

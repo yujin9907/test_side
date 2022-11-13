@@ -5,8 +5,8 @@ import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.side.domain.User;
-import com.example.side.domain.UserRepository;
+import com.example.side.domain.user.User;
+import com.example.side.domain.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
