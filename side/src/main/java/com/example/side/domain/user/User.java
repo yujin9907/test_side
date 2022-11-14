@@ -4,12 +4,16 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.example.side.domain.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,8 +36,9 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false, length = 50)
-    private String role;
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
     @CreationTimestamp
     private Timestamp createAt;
 

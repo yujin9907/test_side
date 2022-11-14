@@ -29,7 +29,7 @@ public class PrincipalDetail implements UserDetails { // userdetials 타입이�
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return user.getRole();
+                return user.getRole().toString();
             }
         });
         return collection;

@@ -34,7 +34,7 @@ public class UserRepositoryTest {
         User user = User.builder()
                 .username("TEST")
                 .password("123")
-                .role("USER")
+                .role(Role.USER)
                 .build();
 
         log.debug("디버그 : " + user.getUsername());
@@ -69,7 +69,7 @@ public class UserRepositoryTest {
         User userPS = userRepository.findByUsername(username);
 
         // then
-        assertEquals(username, userPS.getUsername());
+        assertEquals(1, userPS.getId());
     }
 
 }

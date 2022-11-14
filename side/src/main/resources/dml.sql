@@ -1,5 +1,5 @@
 insert into users(username, password, role, create_at)
-values ('ssar', '123', 'admin', now());
+values ('ssar', '123', 'USER', now());
 
 insert into users(username, password, role, create_at)
-values ('cos', '123', 'default', now());
+values ('cos', '123', 'ADMIN', now());
